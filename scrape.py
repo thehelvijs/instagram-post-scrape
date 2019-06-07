@@ -11,7 +11,7 @@ import pandas as pd, numpy as np
 username = 'caseyneistat'
 post_count = 25
 
-# Allocate chromedriver
+# Locate chromedriver
 browser = webdriver.Chrome('/PATH_TO_CHROMEDRIVER/chromedriver.exe')
 browser.get('https://www.instagram.com/'+username+'/?hl=en')
 
