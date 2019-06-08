@@ -5,7 +5,9 @@ Scraping:
 - Timestamp
 - Like count
 - Comment count
+
 (if available)
+
 - Video views
 - Video duration
 
