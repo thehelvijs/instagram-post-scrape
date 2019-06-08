@@ -9,7 +9,7 @@ from pandas.io.json import json_normalize
 import pandas as pd, numpy as np
 
 username = input('Username: ')
-post_count = input('Post count: ')
+post_count = int(input('Post count: '))
 
 # Locate chromedriver
 browser = webdriver.Chrome('C:/Users/Helvijs Adams/Desktop/chromedriver/chromedriver.exe')
