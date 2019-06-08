@@ -12,8 +12,7 @@ pip install pandas
 pip install selenium
 ```
 
-Download and extract [chromedriver](http://chromedriver.chromium.org/)
-Change the location in 'scrape.py' 
+Download and extract [chromedriver](http://chromedriver.chromium.org/) and change the location in 'scrape.py':
 
 ```python
 browser = webdriver.Chrome('/PATH_TO_CHROMEDRIVER/chromedriver.exe')
