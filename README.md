@@ -1,8 +1,15 @@
-# instagram-info
-Currently scrapes from public accounts
+# instagram-post-scrape
+Currently scrapes posts from public accounts
 
-inspired by [this post](https://medium.com/@srujana.rao2/scraping-instagram-with-python-using-selenium-and-beautiful-soup-8b72c186a058)
+Scraping:
+- Timestamp
+- Like count
+- Comment count
+(if available)
+- Video views
+- Video duration
 
+Inspired by [this post](https://medium.com/@srujana.rao2/scraping-instagram-with-python-using-selenium-and-beautiful-soup-8b72c186a058)
 
 ### Requirements
 
