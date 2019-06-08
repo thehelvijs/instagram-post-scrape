@@ -6,7 +6,7 @@ Scraping:
 - Like count
 - Comment count
 
-(if available)
+If available:
 
 - Video views
 - Video duration
