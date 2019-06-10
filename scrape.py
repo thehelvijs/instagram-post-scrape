@@ -1,13 +1,9 @@
 import sys
+import time, json, re
+from datetime import datetime
 from selenium import webdriver
 from bs4 import BeautifulSoup as bs
-import time
-from datetime import datetime
-import re
 from urllib.request import urlopen
-import json
-from pandas.io.json import json_normalize
-import pandas as pd, numpy as np
 
 # Print iterations progress
 def printProgressBar(iteration, total, prefix='', suffix='', decimals=1, bar_length=100):
@@ -28,13 +24,14 @@ def printProgressBar(iteration, total, prefix='', suffix='', decimals=1, bar_len
 
     sys.stdout.write('\r%s |%s| %s%s %s' % (prefix, bar, percents, '%', suffix)),
 
-    if iteration == total:
+    if iteration >= total:
         sys.stdout.write('\n')
     sys.stdout.flush()
 
 location = 'data/'
 username = input('Username: ')
 post_count = input("Post count (write 'all' to scrape all posts): ")
+scroll_delay = int(input("Scroll delay (default 5 sec.): "))
 
 # Locate chromedriver
 browser = webdriver.Chrome('C:/Users/Helvijs Adams/Desktop/chromedriver/chromedriver.exe')
@@ -57,22 +54,24 @@ else:
 	post_count = int(post_count)
 
 # Calculate how many times it needs to scroll to get to bottom
-scroll_delay = 5
 scroll_amount = round(post_count/(12))
 if scroll_amount < 1:
 	scroll_amount = 1
 
 print()
-print('It will take about ' + str(round(((scroll_amount*scroll_delay) + (post_count*0.85))/60)) + ' minutes to run this program' )
+print('It will take about ' + str(round(((scroll_amount*scroll_delay) + (post_count*0.85))/60)) + ' minutes to run this program (' + str(post_count) + ' posts)')
 start = time.time()
 
 # Add progress bar
-printProgressBar(0, scroll_amount, prefix = '', suffix = 'Collecting links', bar_length = 40)
+print()
+print('Collecting links')
+printProgressBar(0, scroll_amount, prefix = 'Progress:', suffix = '', bar_length = 25)
 barcount = 0
 # Get all links
+failed_collect = 0
 for i in range(scroll_amount):
 	barcount += 1
-	printProgressBar(barcount, scroll_amount, prefix = '', suffix = 'Collecting links', bar_length = 40)
+	printProgressBar(barcount, scroll_amount, prefix = 'Progress:', suffix = '', bar_length = 25)
 	try:
 		Pagelength = browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 		time.sleep(scroll_delay)
@@ -83,23 +82,25 @@ for i in range(scroll_amount):
 		for link in script.findAll('a'):
 			if re.match("/p", link.get('href')):
 				links.append('https://www.instagram.com'+link.get('href'))
-				link_count += 1
 	except:
-		pass
+		failed_collect += 0
 
 # Remove duplicates
 links = list(set(links))
 
 print()
-print('Got ' + str(len(links)) + ' links; extracting data')
+print('Got ' + str(len(links)) + ' links')
 
 # Add progress bar
-printProgressBar(0, len(links), prefix = '', suffix = 'Extracting data', bar_length = 40)
+print()
+print('Extracting data')
+printProgressBar(0, len(links), prefix = 'Progress:', suffix = '', bar_length = 25)
 barcount = 0
 # Extract info from links
+failed_extract = 0
 for i in range(len(links)):
 	barcount += 1
-	printProgressBar(barcount, len(links), prefix = '', suffix = 'Extracting data', bar_length = 40)
+	printProgressBar(barcount, len(links), prefix = 'Progress:', suffix = '', bar_length = 25)
 	try:
 		page = urlopen(links[i]).read()
 		data=bs(page, 'html.parser')
@@ -130,7 +131,7 @@ for i in range(len(links)):
 		else:
 			comment_count = None
 		# Video
-		if 'video_view_count' in str(posts):
+		if 'video_duration' in str(posts):
 			video_view_count = int(posts['shortcode_media']['video_view_count'])
 			video_duration = int(posts['shortcode_media']['video_duration'])
 		else:
@@ -149,9 +150,12 @@ for i in range(len(links)):
 		}
 
 	except:
+		failed_extract += 1
 		pass
 
 print()
+print(str(failed_collect) + ' links failed during collection')
+print(str(failed_extract) + ' links failed during extraction')
 print('Saving to ' + location + username + '_scrape.json')
 
 #Save to .json
@@ -178,5 +182,4 @@ except:
 
 end = time.time()
 
-print('Scrape successful')
 print('Scrape duration: ' + str(datetime.utcfromtimestamp(end-start).strftime('%Hh %Mm')))
