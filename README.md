@@ -17,7 +17,6 @@ Inspired by [this post](https://medium.com/@srujana.rao2/scraping-instagram-with
 
 ```elm
 pip install bs4
-pip install pandas
 pip install selenium
 ```
 
