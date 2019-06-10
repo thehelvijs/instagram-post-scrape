@@ -25,6 +25,7 @@ Download and extract [chromedriver](http://chromedriver.chromium.org/) and chang
 ```python
 browser = webdriver.Chrome('/PATH_TO_CHROMEDRIVER/chromedriver.exe')
 ```
+Run program
 ```elm
 python scrape.py
 ```
