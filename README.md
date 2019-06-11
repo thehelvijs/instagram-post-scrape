@@ -20,10 +20,10 @@ Inspired by [this post](https://medium.com/@srujana.rao2/scraping-instagram-with
 
 *To be added:*
 
-*- Caption (with hashtag extraction)*
-*- Location*
-*- Tagged accounts*
-*- Info related to account *
+- *Caption (with hashtag extraction)*
+- *Location*
+- *Tagged accounts*
+- *Info related to account *
 
 ### Requirements
 
