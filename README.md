@@ -1,7 +1,14 @@
 # instagram-post-scrape
 Currently scrapes posts from public accounts
 
-Scraping:
+Inspired by [this post](https://medium.com/@srujana.rao2/scraping-instagram-with-python-using-selenium-and-beautiful-soup-8b72c186a058)
+
+Basic info:
+
+- Current followers, following and post amount
+
+Scraping from posts:
+
 - Timestamp
 - Like count
 - Comment count
@@ -11,9 +18,18 @@ If available:
 - Video views
 - Video duration
 
-Inspired by [this post](https://medium.com/@srujana.rao2/scraping-instagram-with-python-using-selenium-and-beautiful-soup-8b72c186a058)
+To be added:
+
+- Caption (with hashtag extraction)
+- Location
+- Tagged accounts
+- Info related to account 
 
 ### Requirements
+
+- [Chromedriver](http://chromedriver.chromium.org/)
+- Selenium
+- Beautiful Soup
 
 ```elm
 pip install bs4
