@@ -23,7 +23,7 @@ Inspired by [this post](https://medium.com/@srujana.rao2/scraping-instagram-with
 - *Caption (with hashtag extraction)*
 - *Location*
 - *Tagged accounts*
-- *Info related to account *
+- *Info related to account*
 
 ### Requirements
 
