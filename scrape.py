@@ -34,7 +34,7 @@ post_count = input("Post count (write 'all' to scrape all posts): ")
 scroll_delay = int(input("Scroll delay (default 5 sec.): "))
 
 # Locate chromedriver
-browser = webdriver.Chrome('C:/Users/Helvijs Adams/Desktop/chromedriver/chromedriver.exe')
+browser = webdriver.Chrome('PATH_TO_CHROMEDRIVER/chromedriver.exe')
 browser.get('https://www.instagram.com/'+username+'/?hl=en')
 
 raw = False
