@@ -28,7 +28,7 @@ Inspired by [this post](https://medium.com/@srujana.rao2/scraping-instagram-with
 ### Requirements
 
 - [Python](https://www.python.org/downloads/)
-- [Chromedriver](http://chromedriver.chromium.org/)
+- [Chromedriver 74.0 or lower](http://chromedriver.chromium.org/)
 - Selenium
 - Beautiful Soup
 
