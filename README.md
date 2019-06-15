@@ -28,7 +28,7 @@ Inspired by [this post](https://medium.com/@srujana.rao2/scraping-instagram-with
 ### Requirements
 
 - [Python](https://www.python.org/downloads/)
-- [Chromedriver 74.0 or lower](http://chromedriver.chromium.org/)
+- [Chromedriver 74.0 or lower](http://chromedriver.chromium.org/downloads/)
 - Selenium
 - Beautiful Soup
 
@@ -37,7 +37,7 @@ pip install bs4
 pip install selenium
 ```
 
-Download and extract [chromedriver](http://chromedriver.chromium.org/) and change the location in 'scrape.py':
+Download and extract [chromedriver](http://chromedriver.chromium.org/downloads) and change the location in 'scrape.py':
 
 ```python
 browser = webdriver.Chrome('/PATH_TO_CHROMEDRIVER/chromedriver.exe')
