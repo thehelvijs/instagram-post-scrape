@@ -2,6 +2,7 @@ import sys, os
 import time, json, re
 from datetime import datetime
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options 
 from bs4 import BeautifulSoup as bs
 from urllib.request import urlopen
 
@@ -32,9 +33,15 @@ location = 'data/'
 username = input('Username: ')
 post_count = input("Post count (write 'all' to scrape all posts): ")
 scroll_delay = int(input("Scroll delay (default 5 sec.): "))
+silent_mode = int(input('Silent mode? (1=EN, 0=DIS): '))
 
 # Locate chromedriver
-browser = webdriver.Chrome('PATH_TO_CHROMEDRIVER/chromedriver.exe')
+chrome_options = Options()
+if silent_mode == 1:  
+	chrome_options.add_argument('--headless')
+	#prefs = {"profile.managed_default_content_settings.images": 2}
+	#chrome_options.add_experimental_option("prefs", prefs)
+browser = webdriver.Chrome('PATH_TO_CHROMEDRIVER/chromedriver.exe', options = chrome_options)
 browser.get('https://www.instagram.com/'+username+'/?hl=en')
 
 raw = False
@@ -42,6 +49,11 @@ raw_data = []
 links = []
 posts = {}
 format_json = {}
+
+temporary_likes = 0
+temporary_comments = 0
+temporary_video_duration = 0
+temporary_video_views = 0
 
 # Scrape basic data
 post_amount = browser.find_element_by_class_name("g47SY").text
@@ -116,30 +128,62 @@ for i in range(len(links)):
 			raw_data.append(posts)
 
 		# Check if any of the parameters can be found, if not, set them as None (null)
+		# Timestamp
+		if 'taken_at_timestamp' in str(posts):
+			timestamp = datetime.utcfromtimestamp(posts['shortcode_media']['taken_at_timestamp']).strftime('%Y-%m-%d')
 		# Likes
 		if 'edge_media_preview_like' in str(posts):
 			like_count = posts['shortcode_media']['edge_media_preview_like']['count']
+			# This checks if there is arleady an entry for today, if there is, combine all of todays posts
+			if str(timestamp) in str(format_json):
+				temporary_likes += like_count
+				like_count = temporary_likes
+			else:
+				temporary_likes = 0
 		else:
 			like_count = None
 		# Comments
 		if 'edge_media_preview_comment' in str(posts):
 			comment_count = int(posts['shortcode_media']['edge_media_preview_comment']['count'])
+			if str(timestamp) in str(format_json):
+				temporary_comments += comment_count
+				comment_count = temporary_comments
+			else:
+				temporary_comments = 0
 		elif 'edge_media_to_parent_comment' in str(posts):
 			comment_count = int(posts['shortcode_media']['edge_media_to_parent_comment']['count'])
+			if str(timestamp) in str(format_json):
+				temporary_comments += comment_count
+				comment_count = temporary_comments
+			else:
+				temporary_comments = 0
 		elif 'edge_media_to_comment' in str(posts):
 			comment_count = int(posts['shortcode_media']['edge_media_to_comment']['count'])
+			if str(timestamp) in str(format_json):
+				temporary_comments += comment_count
+				comment_count = temporary_comments
+			else:
+				temporary_comments = 0
 		else:
 			comment_count = None
 		# Video
 		if 'video_duration' in str(posts):
 			video_view_count = int(posts['shortcode_media']['video_view_count'])
 			video_duration = int(posts['shortcode_media']['video_duration'])
+			if str(timestamp) in str(format_json):
+				# Views
+				temporary_video_views += video_view_count
+				video_view_count = temporary_video_views
+				# Duration
+				temporary_video_duration += video_duration
+				video_duration = temporary_video_duration
+			else:
+				temporary_video_views = 0
+				temporary_video_duration = 0
 		else:
 			video_view_count = None
 			video_duration = None
-		# Timestamp
-		if 'taken_at_timestamp' in str(posts):
-			timestamp = datetime.utcfromtimestamp(posts['shortcode_media']['taken_at_timestamp']).strftime('%Y-%m-%d')
+
 
 		# Format JSON
 		format_json[str(timestamp)] = {
