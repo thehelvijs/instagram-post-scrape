@@ -1,4 +1,4 @@
-import sys
+import sys, os
 import time, json, re
 from datetime import datetime
 from selenium import webdriver
@@ -159,6 +159,12 @@ print(str(failed_extract) + ' links failed during extraction')
 print('Saving to ' + location + username + '_scrape.json')
 
 #Save to .json
+try:
+    # Create target Directory
+    os.mkdir(location.replace('/',''))
+    print("Directory " , location.replace('/','') ,  " created ") 
+except FileExistsError:
+    print("Directory " , location.replace('/','') ,  " already exists")
 try:
 	with open(location + username + '_scrape.json', 'r') as read_data:
 		read_data.close()
